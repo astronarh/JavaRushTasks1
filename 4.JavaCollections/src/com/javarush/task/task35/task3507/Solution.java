@@ -1,7 +1,11 @@
 package com.javarush.task.task35.task3507;
 
-import java.io.File;
-import java.io.FilenameFilter;
+import com.javarush.task.task35.task3507.data.Cat;
+import com.javarush.task.task35.task3507.data.Sheep;
+import com.sun.org.apache.bcel.internal.util.ClassLoader;
+
+import java.io.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /* 
@@ -14,32 +18,20 @@ public class Solution {
     }
 
     public static Set<? extends Animal> getAllAnimals(String pathToAnimals) {
-        String ext = ".class";
-        File file = new File(pathToAnimals);
-        if(!file.exists()) System.out.println(pathToAnimals + " папка не существует");
-        File[] listFiles = file.listFiles(new MyFileNameFilter(ext));
-        if(listFiles.length == 0){
-            System.out.println(pathToAnimals + " не содержит файлов с расширением " + ext);
-        }else{
-            for(File f : listFiles)
-                System.out.println("Файл: " + pathToAnimals + File.separator + f.getName());
+        Set<Animal> set = new HashSet<>();
+        File dir = new File(pathToAnimals);
+        String prefix = Solution.class.getPackage().getName() + ".data.";
+        for (File file : dir.listFiles()) {
+
+            System.out.println(file);
+
+            try {
+                Class<? extends Animal> cls = (Class<? extends Animal>) Class.forName(prefix + file.getName().replaceFirst(".class", ""));
+                set.add(cls.newInstance());
+            } catch (ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+            }
         }
-
-
-
-        return null;
-    }
-
-    public static class MyFileNameFilter implements FilenameFilter {
-
-        private String ext;
-
-        public MyFileNameFilter(String ext){
-            this.ext = ext.toLowerCase();
-        }
-        @Override
-        public boolean accept(File dir, String name) {
-            return name.toLowerCase().endsWith(ext);
-        }
+        return (Set<? extends Animal>) set;
     }
 }
+
