@@ -20,21 +20,17 @@ public class Solution {
     public static Integer[] sort(Integer[] array) {
         //implement logic here
         double median = 0;
-        Integer[] secondArray = array;
-        Arrays.sort(secondArray);
-        if (secondArray.length%2==0) {
-            int a = secondArray[(secondArray.length/2)-1];
-            int b = secondArray[secondArray.length/2];
+        Arrays.sort(array);
+        if (array.length%2==0) {
+            int a = array[(array.length / 2) -1];
+            int b = array[array.length / 2];
             median = (a+b)/2.0;
         }
-        else if (secondArray.length % 2 == 1) median = secondArray[(secondArray.length / 2)];
+        else if (array.length % 2 == 1) median = array[(array.length / 2)];
         final double finalMedian = median;
-        Comparator<Integer> comparator = new Comparator<Integer>() {
-            @Override
-            public int compare(Integer o1, Integer o2) {
-                int result =(int) ((Math.abs(o1- finalMedian)) - (Math.abs(o2 - finalMedian)));
-                return result == 0 ? o1-o2 : result;
-            }
+        Comparator<Integer> comparator = (o1, o2) -> {
+            int result =(int) ((Math.abs(o1 - finalMedian)) - (Math.abs(o2 - finalMedian)));
+            return result == 0 ? o1 - o2 : result;
         };
         Arrays.sort(array,comparator);
         return array;
