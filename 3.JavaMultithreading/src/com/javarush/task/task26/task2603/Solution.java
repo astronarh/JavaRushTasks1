@@ -24,8 +24,7 @@ public class Solution {
             int difference = 0;
             for (Comparator<T> comparator : comparators) {
                 difference = comparator.compare(o1, o2);
-                if (difference != 0)
-                    break;
+                if (difference != 0) break;
             }
             return difference;
         }
