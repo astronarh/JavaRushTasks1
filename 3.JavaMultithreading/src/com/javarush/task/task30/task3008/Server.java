@@ -67,6 +67,29 @@ public class Server {
                 }
             }
         }
+
+        @Override
+        public void run() {
+            ConsoleHelper.writeMessage("Established a remote connection to address: "
+                    + socket.getRemoteSocketAddress());
+            String userName = null;
+            try (Connection connection = new Connection(socket)) {
+                userName = serverHandshake(connection);
+                Message userAddedMessage = new Message(MessageType.USER_ADDED, userName);
+                sendBroadcastMessage(userAddedMessage);
+                sendListOfUsers(connection, userName);
+                serverMainLoop(connection, userName);
+            } catch (IOException | ClassNotFoundException e) {
+                ConsoleHelper.writeMessage("ERROR occurred while working with remote address!");
+            } finally {
+                if(userName != null) {
+                    connectionMap.remove(userName);
+                    Message messageToSend = new Message(MessageType.USER_REMOVED, userName);
+                    sendBroadcastMessage(messageToSend);
+                }
+            }
+            ConsoleHelper.writeMessage("Remote connection was closed: " + socket.getRemoteSocketAddress());
+        }
     }
 
     public static void main(String ...args) {
