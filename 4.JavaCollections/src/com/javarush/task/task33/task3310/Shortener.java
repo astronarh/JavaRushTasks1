@@ -3,7 +3,7 @@ package com.javarush.task.task33.task3310;
 import com.javarush.task.task33.task3310.strategy.StorageStrategy;
 
 /**
- * Created by ShkerdinVA on 17.05.2017.
+ * Created by ShkerdinVA on 18.05.2017.
  */
 public class Shortener {
     private Long lastId = 0L;

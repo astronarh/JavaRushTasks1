@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by ShkerdinVA on 17.05.2017.
+ * Created by ShkerdinVA on 18.05.2017.
  */
 public class HashMapStorageStrategy implements StorageStrategy{
-    private HashMap<Long, String> data;
+    private HashMap<Long, String> data = new HashMap<>();
 
     @Override
     public boolean containsKey(Long key) {
