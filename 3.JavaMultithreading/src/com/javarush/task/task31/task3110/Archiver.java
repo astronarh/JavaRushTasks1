@@ -1,18 +1,12 @@
 package com.javarush.task.task31.task3110;
 
-import com.javarush.task.task31.task3110.command.ExitCommand;
 import com.javarush.task.task31.task3110.exception.WrongZipFileException;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.file.Paths;
 
-/**
- * Created by ShkerdinVA on 23.05.2017.
- */
 public class Archiver {
-    public static void main(String... args) {
+    public static void main(String[] args) throws IOException {
+
         Operation operation = null;
         do {
             try {
@@ -27,7 +21,9 @@ public class Archiver {
         } while (operation != Operation.EXIT);
     }
 
+
     public static Operation askOperation() throws IOException {
+        ConsoleHelper.writeMessage("");
         ConsoleHelper.writeMessage("Выберите операцию:");
         ConsoleHelper.writeMessage(String.format("\t %d - упаковать файлы в архив", Operation.CREATE.ordinal()));
         ConsoleHelper.writeMessage(String.format("\t %d - добавить файл в архив", Operation.ADD.ordinal()));
