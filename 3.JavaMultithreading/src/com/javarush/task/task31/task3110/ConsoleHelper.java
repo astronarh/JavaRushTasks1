@@ -4,28 +4,20 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-/**
- * Created by ShkerdinVA on 23.05.2017.
- */
 public class ConsoleHelper {
+    private static BufferedReader bis = new BufferedReader(new InputStreamReader(System.in));
+
     public static void writeMessage(String message) {
         System.out.println(message);
     }
 
-    public static String readString() {
-        String inString;
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
-            inString = bufferedReader.readLine();
-            return inString;
-        } catch (IOException e) { return null; }
-
+    public static String readString() throws IOException {
+        String text = bis.readLine();
+        return text;
     }
 
-    public static int readInt() {
-        int inInteger;
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in))) {
-            inInteger = Integer.parseInt(bufferedReader.readLine());
-            return inInteger;
-        } catch (IOException e) { return 0; }
+    public static int readInt() throws IOException {
+        String text = readString();
+        return Integer.parseInt(text.trim());
     }
 }
