@@ -1,9 +1,6 @@
 package com.javarush.task.task39.task3913;
 
-import com.javarush.task.task39.task3913.query.DateQuery;
-import com.javarush.task.task39.task3913.query.EventQuery;
-import com.javarush.task.task39.task3913.query.IPQuery;
-import com.javarush.task.task39.task3913.query.UserQuery;
+import com.javarush.task.task39.task3913.query.*;
 
 import java.io.File;
 import java.io.FilenameFilter;
@@ -16,8 +13,10 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery
+public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery, QLQuery
 {
 
     private Path logDir;
@@ -712,5 +711,261 @@ public class LogParser implements IPQuery, UserQuery, DateQuery, EventQuery
             }
         }
         return allTasksAndTheirNumber;
+    }
+
+    @Override
+    public Set<Object> execute(String query) {
+        String field1 = "";
+        String field2 = "";
+        String value1 = "";
+        String value2 = "";
+        String value3 = "";
+
+        List<String> values = new ArrayList<>();
+        Pattern pattern = Pattern.compile("\"[\\w \\.:]+\"");
+        Matcher matcher = pattern.matcher(query);
+        while (matcher.find()) {
+            values.add(matcher.group().replace("\"", ""));
+        }
+
+        if (query.split(" ").length > 2) {
+            field1 = query.split(" ")[1];
+            field2 = query.split(" ")[3];
+            value1 = values.get(0);
+            if (values.size() > 1) {
+                value2 = values.get(1);
+                value3 = values.get(2);
+            }
+        }
+
+        Set<Object> querySet = new HashSet<>();
+        for (String line : linesList) {
+            String[] lineParts = line.split("\\t");
+            if (values.size() == 0) {
+                switch (query) {
+                    case "get ip":
+                        querySet.add(lineParts[0]);
+                        break;
+                    case "get user":
+                        querySet.add(lineParts[1]);
+                        break;
+                    case "get date":
+                        Date date = getDate(lineParts[2]);
+                        querySet.add(date);
+                        break;
+                    case "get event":
+                        Event event = Event.valueOf(lineParts[3].split(" ")[0]);
+                        querySet.add(event);
+                        break;
+                    case "get status":
+                        Status status = Status.valueOf(lineParts[4]);
+                        querySet.add(status);
+                        break;
+                }
+            } else {
+                switch (field1) {
+                    case "ip":
+                        switch (field2) {
+                            case "ip":
+                            case "user":
+                            case "date":
+                            case "status":
+                                if (value1.equals(lineParts[getField2Index(field2)])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        /*if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            querySet.add(lineParts[0]);
+                                        }*/
+                                        if (date.getTime() > getDate(value2).getTime() && date.getTime() < getDate(value3).getTime()) {
+                                            querySet.add(lineParts[0]);
+                                        }
+                                    } else {
+                                        querySet.add(lineParts[0]);
+                                    }
+                                }
+                                break;
+                            case "event":
+                                if (value1.equals(lineParts[3].split(" ")[0])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        /*!!!!*/
+                                        /*if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            querySet.add(lineParts[0]);
+                                        }*/
+                                        if (date.getTime() > getDate(value2).getTime() && date.getTime() < getDate(value3).getTime()) {
+                                            querySet.add(lineParts[0]);
+                                        }
+                                    } else {
+                                        querySet.add(lineParts[0]);
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                    case "user":
+                        switch (field2) {
+                            case "ip":
+                            case "user":
+                            case "date":
+                            case "status":
+                                if (value1.equals(lineParts[getField2Index(field2)])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            querySet.add(lineParts[1]);
+                                        }
+                                    } else {
+                                        querySet.add(lineParts[1]);
+                                    }
+                                }
+                                break;
+                            case "event":
+                                if (value1.equals(lineParts[3].split(" ")[0])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            querySet.add(lineParts[1]);
+                                        }
+                                    } else {
+                                        querySet.add(lineParts[1]);
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                    case "date":
+                        switch (field2) {
+                            case "ip":
+                            case "user":
+                            case "date":
+                            case "status":
+                                if (value1.equals(lineParts[getField2Index(field2)])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            date = getDate(lineParts[2]);
+                                            querySet.add(date);
+                                        }
+                                    } else {
+                                        Date date = getDate(lineParts[2]);
+                                        querySet.add(date);
+                                    }
+                                }
+                                break;
+                            case "event":
+                                if (value1.equals(lineParts[3].split(" ")[0])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+
+                                        if (date.getTime() > getDate(value2).getTime() && date.getTime() < getDate(value3).getTime()) {
+                                            date = getDate(lineParts[2]);
+                                            querySet.add(date);
+                                        }
+
+                                        /*if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            date = getDate(lineParts[2]);
+                                            querySet.add(date);
+                                        }*/
+
+                                    } else {
+                                        Date date = getDate(lineParts[2]);
+                                        querySet.add(date);
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                    case "event":
+                        switch (field2) {
+                            case "ip":
+                            case "user":
+                            case "date":
+                            case "status":
+                                if (value1.equals(lineParts[getField2Index(field2)])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            Event event = Event.valueOf(lineParts[3].split(" ")[0]);
+                                            querySet.add(event);
+                                        }
+                                    } else {
+                                        Event event = Event.valueOf(lineParts[3].split(" ")[0]);
+                                        querySet.add(event);
+                                    }
+                                }
+                                break;
+                            case "event":
+                                if (value1.equals(lineParts[3].split(" ")[0])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            Event event = Event.valueOf(lineParts[3].split(" ")[0]);
+                                            querySet.add(event);
+                                        }
+                                    } else {
+                                        Event event = Event.valueOf(lineParts[3].split(" ")[0]);
+                                        querySet.add(event);
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                    case "status":
+                        switch (field2) {
+                            case "ip":
+                            case "user":
+                            case "date":
+                            case "status":
+                                if (value1.equals(lineParts[getField2Index(field2)])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            Status status = Status.valueOf(lineParts[4]);
+                                            querySet.add(status);
+                                        }
+                                    } else {
+                                        Status status = Status.valueOf(lineParts[4]);
+                                        querySet.add(status);
+                                    }
+                                }
+                                break;
+                            case "event":
+                                if (value1.equals(lineParts[3].split(" ")[0])) {
+                                    if (values.size() == 3) {
+                                        Date date = getDate(lineParts[2]);
+                                        if (isCompatibleDate(date.getTime(), getDate(value2), getDate(value3))) {
+                                            Status status = Status.valueOf(lineParts[4]);
+                                            querySet.add(status);
+                                        }
+                                    } else {
+                                        Status status = Status.valueOf(lineParts[4]);
+                                        querySet.add(status);
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+        return querySet;
+    }
+
+    private int getField2Index(String field2)
+    {
+        switch (field2)
+        {
+            case "ip":
+                return 0;
+            case "user":
+                return 1;
+            case "date":
+                return 2;
+            case "event":
+                return 3;
+            case "status":
+                return 4;
+        }
+        return -1;
     }
 }
