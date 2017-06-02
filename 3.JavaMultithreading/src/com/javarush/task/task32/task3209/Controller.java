@@ -9,6 +9,11 @@ import java.io.File;
 public class Controller {
     private View view;
     private HTMLDocument document;
+
+    public HTMLDocument getDocument() {
+        return document;
+    }
+
     private File currentFile;
 
     public Controller(View view) {
