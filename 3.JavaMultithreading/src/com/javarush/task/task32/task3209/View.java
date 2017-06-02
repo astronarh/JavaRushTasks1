@@ -84,4 +84,12 @@ public class View extends JFrame implements ActionListener {
             ExceptionHandler.log(e);
         }
     }
+
+    public boolean canUndo() {
+        return false;
+    }
+
+    public boolean canRedo() {
+        return false;
+    }
 }
