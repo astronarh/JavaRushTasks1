@@ -29,7 +29,7 @@ public class Controller {
         try {
             List<Vacancy> list = new ArrayList<>();
             for (Provider provider : providers) {
-                List<Vacancy> listVacPr = provider.getJavaVacancies("???");
+                List<Vacancy> listVacPr = provider.getJavaVacancies("Киев");
                 for (Vacancy vac : listVacPr) {
                     list.add(vac);
                 }

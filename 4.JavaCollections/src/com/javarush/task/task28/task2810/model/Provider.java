@@ -2,6 +2,7 @@ package com.javarush.task.task28.task2810.model;
 
 import com.javarush.task.task28.task2810.vo.Vacancy;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -19,6 +20,11 @@ public class Provider {
     }
 
     public List<Vacancy> getJavaVacancies(String searchString) {
-        return strategy.getVacancies(searchString);
+        try {
+            return strategy.getVacancies(searchString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
