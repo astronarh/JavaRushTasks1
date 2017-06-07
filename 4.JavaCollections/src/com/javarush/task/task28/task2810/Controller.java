@@ -1,31 +1,33 @@
 package com.javarush.task.task28.task2810;
 
-import com.javarush.task.task28.task2810.model.Provider;
-import com.javarush.task.task28.task2810.vo.Vacancy;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.javarush.task.task28.task2810.model.Model;
 
 /**
  * Created by ShkerdinVA on 06.06.2017.
  */
 public class Controller {
-    private Provider[] providers;
+    //private Provider[] providers;
+    private Model model;
 
-    @Override
+    /*@Override
     public String toString() {
         return "Controller{" +
                 "providers=" + Arrays.toString(providers) +
                 '}';
+    }*/
+
+    public Controller(Model model) {
+        if (model == null) {
+            throw new IllegalArgumentException();
+        }
+        this.model = model;
     }
 
-    public Controller(Provider... providers) {
-        if (providers.length == 0) throw new IllegalArgumentException();
-        else this.providers = providers;
+    public void onCitySelect(String cityName) {
+        model.selectCity(cityName);
     }
 
-    public void scan() {
+    /*public void scan() {
         try {
             List<Vacancy> list = new ArrayList<>();
             for (Provider provider : providers) {
@@ -38,5 +40,5 @@ public class Controller {
         } catch (NullPointerException e) {
             System.out.println(0);
         }
-    }
+    }*/
 }
