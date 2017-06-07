@@ -3,6 +3,9 @@ package com.javarush.task.task28.task2810.view;
 import com.javarush.task.task28.task2810.Controller;
 import com.javarush.task.task28.task2810.vo.Vacancy;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -32,6 +35,11 @@ public class HtmlView implements View{
     }
 
     private void updateFile(String string) {
-
+        try (BufferedWriter fWriter = new BufferedWriter(new FileWriter(filePath));) {
+            fWriter.write(string);
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
