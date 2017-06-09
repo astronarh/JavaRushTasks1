@@ -2,14 +2,14 @@ package com.javarush.task.task27.task2712;
 
 import com.javarush.task.task27.task2712.kitchen.Order;
 
-import java.io.IOException;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * Created by ShkerdinVA on 09.06.2017.
  */
-public class Tablet {
+public class Tablet extends Observable {
     final int number;
     private static java.util.logging.Logger logger = Logger.getLogger(Tablet.class.getName());
 
@@ -17,13 +17,20 @@ public class Tablet {
         this.number = number;
     }
 
-    public void createOrder() {
-        try {
-            final Order newOrder = new Order(this);
-        } catch (IOException e) {
+    public Order createOrder()
+    {
+        Order order = null;
+        try
+        {
+            order = new Order(this);
+            ConsoleHelper.writeMessage(order.toString());
+            setChanged();
+            notifyObservers(order);
+
+        } catch (Exception e) {
             logger.log(Level.SEVERE, "Console is unavailable.");
-            return;
         }
+        return order;
     }
 
     @Override
@@ -34,4 +41,5 @@ public class Tablet {
     public int getNumber() {
         return number;
     }
+
 }
