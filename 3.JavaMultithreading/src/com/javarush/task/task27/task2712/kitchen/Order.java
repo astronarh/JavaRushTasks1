@@ -20,6 +20,17 @@ public class Order {
 
     @Override
     public String toString() {
-        return dishes.isEmpty() ? "" : "Your order: " + dishes + " of Tablet{" + "number=" + tablet.getNumber() + '}';
+        return dishes.isEmpty() ? "" : "Your order: " + dishes + " of " + tablet;    }
+
+    public int getTotalCookingTime() {
+        int cookingTime = 0;
+        for (Dish dish: dishes) {
+            cookingTime += dish.getDuration();
+        }
+        return cookingTime;
+    }
+
+    public boolean isEmpty() {
+        return dishes.isEmpty();
     }
 }
