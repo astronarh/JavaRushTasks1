@@ -32,4 +32,15 @@ public class Advertisement {
         this.amountPerOneDisplaying = initialAmount / hits;
 
     }
+
+    public void revalidate() {
+        if (hits <= 0) throw new UnsupportedOperationException();
+        else hits--;
+    }
+
+    public int getHits() {
+        return hits;
+    }
 }
+
+
