@@ -22,4 +22,36 @@ public class ConsoleHelper {
         }
         return input;
     }
+
+    public static String askCurrencyCode() {
+        writeMessage("Введите код валюты, три символа - ");
+        while (true) {
+            String currencyСode = readString();
+            if (currencyСode.length() == 3) return currencyСode.toUpperCase();
+            else writeMessage("Код должен содержать три символа, повторите ввод - ");
+        }
+    }
+
+    public static String[] getValidTwoDigits(String currencyCode) {
+        writeMessage("Введите номинал и количество банкнот, два целывх положительных числа - ");
+        String[] denominationAndQuantity;
+        while (true) {
+            denominationAndQuantity = readString().split(" ");
+            int denomination = 0;
+            int quantity = 0;
+            try {
+                denomination = Integer.parseInt(denominationAndQuantity[0]);
+                quantity = Integer.parseInt(denominationAndQuantity[1]);
+            } catch (Exception e) {
+                writeMessage("Неверный ввод, введите снова - ");
+                continue;
+            }
+            if (denomination <= 0 || quantity <= 0) {
+                writeMessage("Неверный ввод, введите снова - ");
+                continue;
+            }
+            break;
+        }
+        return denominationAndQuantity;
+    }
 }

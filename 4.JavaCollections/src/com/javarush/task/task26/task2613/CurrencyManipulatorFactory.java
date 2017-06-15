@@ -14,7 +14,7 @@ public class CurrencyManipulatorFactory {
     }
 
     public static CurrencyManipulator getManipulatorByCurrencyCode(String currencyCode) {
-
-        return null;
+        if (!map.containsKey(currencyCode)) map.put(currencyCode, new CurrencyManipulator(currencyCode));
+        return map.get(currencyCode);
     }
 }
