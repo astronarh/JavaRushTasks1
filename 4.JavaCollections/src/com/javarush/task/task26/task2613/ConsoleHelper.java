@@ -59,7 +59,7 @@ public class ConsoleHelper {
 
     public static Operation askOperation() throws InterruptOperationException {
         do {
-            writeMessage("Выберете операцию:\n1 - INFO\n2) DEPOSIT\n3 - WITHDRAW\n4 - EXIT");
+            writeMessage("Выберете операцию:\n1 - INFO\n2 - DEPOSIT\n3 - WITHDRAW\n4 - EXIT");
             try {
                 String operation = readString();
                 return Operation.getAllowableOperationByOrdinal(Integer.parseInt(operation));

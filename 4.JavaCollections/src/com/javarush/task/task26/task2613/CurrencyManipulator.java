@@ -32,4 +32,8 @@ public class CurrencyManipulator {
         for (Map.Entry<Integer, Integer> x : denominations.entrySet()) totalAmount += x.getKey() * x.getValue();
         return totalAmount;
     }
+
+    public boolean hasMoney() {
+        return denominations.size() != 0;
+    }
 }
