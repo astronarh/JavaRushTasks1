@@ -1,5 +1,7 @@
 package com.javarush.task.task26.task2613;
 
+import com.javarush.task.task26.task2613.exception.InterruptOperationException;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -53,5 +55,18 @@ public class ConsoleHelper {
             break;
         }
         return denominationAndQuantity;
+    }
+
+    public static Operation askOperation() throws InterruptOperationException {
+        do {
+            writeMessage("Выберете операцию:\n1 - INFO\n2) DEPOSIT\n3 - WITHDRAW\n4 - EXIT");
+            try {
+                String operation = readString();
+                return Operation.getAllowableOperationByOrdinal(Integer.parseInt(operation));
+            } catch (IllegalArgumentException e) {
+                writeMessage("Ввод некорректен, попробуйте снова: ");
+                continue;
+            }
+        } while (true);
     }
 }
