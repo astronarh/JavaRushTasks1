@@ -9,6 +9,11 @@ import java.awt.event.KeyEvent;
 public class Controller extends KeyAdapter{
     private Model model;
     private View view;
+
+    public View getView() {
+        return view;
+    }
+
     private static final int WINNING_TILE = 2048;
 
     public Tile[][] getGameTiles() {
