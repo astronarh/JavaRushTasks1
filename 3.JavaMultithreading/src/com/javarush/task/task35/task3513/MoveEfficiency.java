@@ -3,7 +3,7 @@ package com.javarush.task.task35.task3513;
 /**
  * Created by ShkerdinVA on 19.06.2017.
  */
-public class MoveEfficiency {
+public class MoveEfficiency implements Comparable<MoveEfficiency>{
     private int numberOfEmptyTiles;
     private int score;
     private Move move;
@@ -16,5 +16,17 @@ public class MoveEfficiency {
 
     public Move getMove() {
         return move;
+    }
+
+    @Override
+    public int compareTo(MoveEfficiency o) {
+        if (this == o) return 0;
+        if (this.numberOfEmptyTiles > o.numberOfEmptyTiles) return 1;
+        if (this.numberOfEmptyTiles < o.numberOfEmptyTiles) return -1;
+        if (this.numberOfEmptyTiles == o.numberOfEmptyTiles) {
+            if (this.score > o.score) return 1;
+            if (this.score < o.score) return -1;
+        }
+        return 0;
     }
 }
