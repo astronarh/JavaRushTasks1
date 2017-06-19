@@ -13,7 +13,6 @@ public class Tile {
     }
 
     public Tile(int value) {
-
         this.value = value;
     }
 
