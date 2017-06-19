@@ -2,6 +2,7 @@ package com.javarush.task.task35.task3513;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 /**
  * Created by ShkerdinVA on 16.06.2017.
@@ -11,6 +12,9 @@ public class Model {
     private Tile[][] gameTiles;
     int score;
     int maxTile;
+    private Stack<Tile[][]> previousStates;
+    private Stack<Integer> previousScores;
+    private boolean isSaveNeeded = true;
 
     public Tile[][] getGameTiles() {
         return gameTiles;
@@ -27,6 +31,8 @@ public class Model {
         resetGameTiles();
         this.score = 0;
         this.maxTile = 2;
+        this.previousScores = new Stack<Integer>();
+        this.previousStates = new Stack<Tile[][]>();
     }
 
     private List<Tile> getEmptyTiles() {
@@ -154,5 +160,25 @@ public class Model {
             }
         }
         return false;
+    }
+
+    private void saveState(Tile[][] tiles) {
+        Tile[][] newTiles = new Tile[FIELD_WIDTH][FIELD_WIDTH];
+        for(int i = 0; i < FIELD_WIDTH; i++){
+            for(int j = 0; j < FIELD_WIDTH; j++){
+                newTiles[i][j] = new Tile();
+                newTiles[i][j].value = tiles[i][j].value;
+            }
+        }
+        this.previousStates.push(newTiles);
+        previousScores.push(score);
+        isSaveNeeded = false;
+    }
+
+    public void rollback() {
+        if (!previousStates.isEmpty() && !previousScores.isEmpty()) {
+            this.score = previousScores.pop();
+            this.gameTiles = previousStates.pop();
+        }
     }
 }
