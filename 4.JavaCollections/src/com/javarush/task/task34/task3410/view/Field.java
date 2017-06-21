@@ -8,6 +8,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.util.Set;
 
 /**
@@ -31,7 +32,11 @@ public class Field extends JPanel {
                     eventListener.move(Direction.DOWN);
                     break;
                 case (KeyEvent.VK_R):
-                    eventListener.restart();
+                    try {
+                        eventListener.restart();
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                     break;
             }
         }

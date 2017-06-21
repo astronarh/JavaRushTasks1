@@ -5,6 +5,7 @@ import com.javarush.task.task34.task3410.controller.EventListener;
 import com.javarush.task.task34.task3410.model.GameObjects;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public class View extends JFrame {
     private Controller controller;
@@ -37,7 +38,7 @@ public class View extends JFrame {
         return controller.getGameObjects();
     }
 
-    public void completed(int level) {
+    public void completed(int level) throws IOException {
         update();
         JOptionPane.showMessageDialog(null, level + "пройден", "уровень", JOptionPane.INFORMATION_MESSAGE);
         controller.startNextLevel();

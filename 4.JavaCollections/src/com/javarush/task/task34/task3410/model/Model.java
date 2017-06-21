@@ -2,6 +2,7 @@ package com.javarush.task.task34.task3410.model;
 
 import com.javarush.task.task34.task3410.controller.EventListener;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 
 /**
@@ -22,15 +23,15 @@ public class Model {
         return gameObjects;
     }
 
-    public void restartLevel(int level) {
+    public void restartLevel(int level) throws IOException {
         this.gameObjects = levelLoader.getLevel(level);
     }
 
-    public void restart() {
+    public void restart() throws IOException {
         restartLevel(this.currentLevel);
     }
 
-    public void startNextLevel() {
+    public void startNextLevel() throws IOException {
         currentLevel++;
         restartLevel(this.currentLevel);
     }
@@ -81,7 +82,7 @@ public class Model {
         return false;
     }
 
-    public void checkCompletion() {
+    public void checkCompletion() throws IOException {
         boolean yes = true;
         for(Home home : gameObjects.getHomes()){
             boolean currentyes = false;
@@ -94,7 +95,7 @@ public class Model {
         if (yes) eventListener.levelCompleted(currentLevel);
     }
 
-    public void move(Direction direction){
+    public void move(Direction direction) throws IOException {
         Player player = gameObjects.getPlayer();
         if (checkWallCollision(player, direction)) {
             return;
